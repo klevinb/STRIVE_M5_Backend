@@ -48,7 +48,8 @@ router.post("/", (req, res) => {
 
 router.post("/checkEmail", (req, res) => {
     newStudent = req.body
-    const students = getStudents()
+    const studentsData = getStudents()
+    const students = studentsData.filter(student => student.id !== newStudent.id)
     if (students.length > 0) {
         const filteredStudents = students.filter(student => student.email === newStudent.email)
         if (filteredStudents.length > 0) {
