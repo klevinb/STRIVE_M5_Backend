@@ -89,7 +89,15 @@ class App extends Component {
     })
     if (resp.ok) {
       this.setState({
-        addStudent: false
+        addStudent: false,
+        editStudent: false,
+        postButton: true,
+        newStudent: {
+          name: "",
+          surname: "",
+          email: "",
+          date: ""
+        }
       });
     }
     this.fetchData()
@@ -158,7 +166,19 @@ class App extends Component {
                   <Card.Footer className="d-flex justify-content-center">
                     <Button variant="success" onClick={() => this.setState({ addStudent: !this.state.addStudent })}>Add Student</Button>
                   </Card.Footer>
-                  <Modal show={this.state.addStudent} onHide={() => this.setState({ addStudent: false })}>
+                  <Modal show={this.state.addStudent} onHide={() => this.setState({
+                    addStudent: false,
+                    editStudent: false,
+                    postButton: true,
+                    newStudent: {
+                      name: "",
+                      surname: "",
+                      email: "",
+                      date: ""
+                    }
+                  }
+
+                  )}>
                     <Modal.Header closeButton>
                       <Modal.Title className="text-center">Add a new Student</Modal.Title>
                     </Modal.Header>
