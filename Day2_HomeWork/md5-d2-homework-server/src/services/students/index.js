@@ -40,20 +40,26 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
     newStudent = { id: uniqid(), ...req.body }
     const students = getStudents()
+    students.push(newStudent)
+    fs.writeFileSync(studentFilePath, JSON.stringify(students))
+    res.status(201).send(students)
+
+})
+
+router.post("/checkEmail", (req, res) => {
+    newStudent = req.body
+    const students = getStudents()
     if (students.length > 0) {
         const filteredStudents = students.filter(student => student.email === newStudent.email)
         if (filteredStudents.length > 0) {
             res.status(400).send(false)
         } else {
-            students.push(newStudent)
-            fs.writeFileSync(studentFilePath, JSON.stringify(students))
-            res.status(201).send(students)
+            res.status(200).send(true)
         }
     } else {
-        students.push(newStudent)
-        fs.writeFileSync(studentFilePath, JSON.stringify(students))
-        res.status(201).send(students)
+        res.status(200).send(true)
     }
+
 })
 
 router.put("/:id", (req, res) => {
