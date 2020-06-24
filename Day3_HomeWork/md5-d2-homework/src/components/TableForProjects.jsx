@@ -5,6 +5,7 @@ import {
     FormControl,
     Alert
 } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 function Table1(props) {
     return (
@@ -32,8 +33,8 @@ function Table1(props) {
                                 <td>{project.name}</td>
                                 <td>{project.description}</td>
                                 <td>{project.createdAt.slice(0, 10)}</td>
-                                <td><a href={"https://" + project.repoUrl} target="_blank">{project.repoUrl}</a></td>
-                                <td>{project.liveUrl}</td>
+                                <td><Link to={"https://" + project.repoUrl}>{project.repoUrl}</Link></td>
+                                <td><Link to={"https://" + project.liveUrl}>{project.liveUrl}</Link></td>
                                 <td><Button variant="warning" onClick={() => props.editProject(project.id)} >Edit</Button></td>
                                 <td><Button variant="danger" onClick={() => props.deleteProject(project.id)} >Delete</Button></td>
                             </tr>
