@@ -16,7 +16,7 @@ const getPortfolios = () => {
     return portfolios
 }
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
     const portfolios = getPortfolios()
     if (portfolios.length > 0) {
         if (req.query && req.query.name) {
@@ -26,21 +26,30 @@ router.get("/", (req, res) => {
             res.send(portfolios)
         }
     } else {
-        res.status(404).send("We are sorry but we dont have any portfolios yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
     const portfolios = getPortfolios()
     if (portfolios.length > 0) {
         const portfolio = portfolios.filter(portfolio => portfolio.id === req.params.id)
         if (portfolio.length > 0) {
             res.status(200).send(portfolio)
         } else {
-            res.status(404).send("We cant find a portfolios with this ID")
+            const error = new Error()
+            error.httpStatusCode = 404
+            error.message = "We cannot find a project with this ID"
+            next(error)
         }
     } else {
-        res.status(404).send("We are sorry but we dont have any portfolios yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 
@@ -63,7 +72,7 @@ router.post("/", (req, res) => {
 
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res, next) => {
     const portfolios = getPortfolios()
     if (portfolios.length > 0) {
         const filteredPortfolios = portfolios.filter(portfolio => portfolio.id !== req.params.id)
@@ -74,30 +83,44 @@ router.put("/:id", (req, res) => {
         fs.writeFileSync(portfoliosFilePath, JSON.stringify(filteredPortfolios))
         res.send(portfolio)
     } else {
-        res.status(404).send("We are sorry but we dont have any portfolios yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
     const portfolios = getPortfolios()
     if (portfolios.length > 0) {
         const filteredPortfolios = portfolios.filter(portfolio => portfolio.id !== req.params.id)
         const projectThatWillBeDeleted = portfolios.filter(portfolio => portfolio.id === req.params.id)
-        fs.writeFileSync(portfoliosFilePath, JSON.stringify(filteredPortfolios))
+        if (projectThatWillBeDeleted.length > 0) {
+            fs.writeFileSync(portfoliosFilePath, JSON.stringify(filteredPortfolios))
 
-        const filteredStudents = students.filter(student => student.id !== projectThatWillBeDeleted[0].studentId)
-        const decsStudentProjectNr = students.filter(student => student.id === projectThatWillBeDeleted[0].studentId)
-        if (decsStudentProjectNr[0].numberOfProjects > 0) {
-            decsStudentProjectNr[0].numberOfProjects--
+            const filteredStudents = students.filter(student => student.id !== projectThatWillBeDeleted[0].studentId)
+            const decsStudentProjectNr = students.filter(student => student.id === projectThatWillBeDeleted[0].studentId)
+            if (decsStudentProjectNr[0].numberOfProjects > 0) {
+                decsStudentProjectNr[0].numberOfProjects--
+            }
+
+            filteredStudents.push(decsStudentProjectNr[0])
+
+            fs.writeFileSync(studentsFilePath, JSON.stringify(filteredStudents))
+
+            res.send("That project was deleted!")
+        } else {
+            const error = new Error()
+            error.httpStatusCode = 404
+            error.message = "We cannot find a project with this ID"
+            next(error)
+
         }
-
-        filteredStudents.push(decsStudentProjectNr[0])
-
-        fs.writeFileSync(studentsFilePath, JSON.stringify(filteredStudents))
-
-        res.send("That portfolios was deleted!")
     } else {
-        res.status(404).send("We are sorry but we dont have any portfolios yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 

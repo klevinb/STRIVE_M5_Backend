@@ -15,12 +15,15 @@ const getStudents = () => {
     return students
 }
 
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
     const students = getStudents()
     if (students.length > 0) {
         res.send(students)
     } else {
-        res.status(404).send("We are sorry but we dont have any students yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 
@@ -30,17 +33,23 @@ router.get("/:id/projects", (req, res) => {
     res.send(studentProjects)
 })
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
     const students = getStudents()
     if (students.length > 0) {
         const student = students.filter(student => student.id === req.params.id)
         if (student.length > 0) {
             res.status(200).send(student)
         } else {
-            res.status(404).send("We cant find a student with this ID")
+            const error = new Error()
+            error.httpStatusCode = 404
+            error.message = "We cannot find a student with this ID"
+            next(error)
         }
     } else {
-        res.status(404).send("We are sorry but we dont have any students yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 
@@ -70,7 +79,7 @@ router.post("/checkEmail", (req, res) => {
 
 })
 
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res, next) => {
     const students = getStudents()
     if (students.length > 0) {
         const filteredStudents = students.filter(student => student.id !== req.params.id)
@@ -81,18 +90,32 @@ router.put("/:id", (req, res) => {
         fs.writeFileSync(studentFilePath, JSON.stringify(filteredStudents))
         res.send(student)
     } else {
-        res.status(404).send("We are sorry but we dont have any students yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
     const students = getStudents()
     if (students.length > 0) {
         const filteredStudents = students.filter(student => student.id !== req.params.id)
-        fs.writeFileSync(studentFilePath, JSON.stringify(filteredStudents))
-        res.send("That student was deleted!")
+        const deletedStudent = students.filter(student => student.id === req.params.id)
+        if (deletedStudent.length > 0) {
+            fs.writeFileSync(studentFilePath, JSON.stringify(filteredStudents))
+            res.send("That student was deleted!")
+        } else {
+            const error = new Error()
+            error.httpStatusCode = 404
+            error.message = "We dont have any student with that ID!"
+            next(error)
+        }
     } else {
-        res.status(404).send("We are sorry but we dont have any students yet!")
+        const error = new Error()
+        error.httpStatusCode = 404
+        error.message = "We dont have any data!"
+        next(error)
     }
 })
 
