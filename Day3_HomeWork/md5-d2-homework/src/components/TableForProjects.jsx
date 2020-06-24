@@ -1,5 +1,10 @@
 import React from 'react';
-import { Button, Table, FormControl } from 'react-bootstrap'
+import {
+    Button,
+    Table,
+    FormControl,
+    Alert
+} from 'react-bootstrap'
 
 function Table1(props) {
     return (
@@ -36,7 +41,10 @@ function Table1(props) {
                     </tbody>
                 </Table>
                 :
-                <p>No projects for this user</p>
+
+                <Alert variant="info">
+                    No projects for this user
+                </Alert>
             }
         </>
     );
