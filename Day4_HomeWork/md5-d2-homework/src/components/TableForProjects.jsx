@@ -45,9 +45,13 @@ function Table1(props) {
                                 </td>
                                 <td>{project.createdAt.slice(0, 10)}</td>
                                 <td>
-                                    <div style={{ width: "250px" }} className="mb-4">
-                                        <Button>Write a review</Button>
-                                    </div>
+                                    {project.studentId !== "admin" ?
+                                        <div style={{ width: "250px" }} className="mb-4">
+                                            <Button onClick={() => { props.getProjectId(project.id) }}>Write a review</Button>
+                                        </div>
+                                        :
+                                        null
+                                    }
                                     {props.reviews &&
                                         <Accordion style={{ width: "250px" }} defaultActiveKey="0">
                                             <Card>

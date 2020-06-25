@@ -177,6 +177,8 @@ class App extends Component {
     })
     if (resp.ok) {
       this.fetchData()
+    } else {
+      alert("Take it easy user, you cannot delete admin! ;)")
     }
   }
 

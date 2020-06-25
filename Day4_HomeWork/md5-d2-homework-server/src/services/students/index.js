@@ -125,23 +125,28 @@ router.put("/:id", (req, res, next) => {
 
 router.delete("/:id", (req, res, next) => {
     const students = getStudents()
-    if (students.length > 0) {
-        const filteredStudents = students.filter(student => student.id !== req.params.id)
-        const deletedStudent = students.filter(student => student.id === req.params.id)
-        if (deletedStudent.length > 0) {
-            fs.writeFileSync(studentFilePath, JSON.stringify(filteredStudents))
-            res.send("That student was deleted!")
+    if (req.params.id === "admin") {
+        res.status(401).send("You can't delete the admin!")
+    } else {
+
+        if (students.length > 0) {
+            const filteredStudents = students.filter(student => student.id !== req.params.id)
+            const deletedStudent = students.filter(student => student.id === req.params.id)
+            if (deletedStudent.length > 0) {
+                fs.writeFileSync(studentFilePath, JSON.stringify(filteredStudents))
+                res.send("That student was deleted!")
+            } else {
+                const error = new Error()
+                error.httpStatusCode = 404
+                error.message = "We dont have any student with that ID!"
+                next(error)
+            }
         } else {
             const error = new Error()
             error.httpStatusCode = 404
-            error.message = "We dont have any student with that ID!"
+            error.message = "We dont have any data!"
             next(error)
         }
-    } else {
-        const error = new Error()
-        error.httpStatusCode = 404
-        error.message = "We dont have any data!"
-        next(error)
     }
 })
 

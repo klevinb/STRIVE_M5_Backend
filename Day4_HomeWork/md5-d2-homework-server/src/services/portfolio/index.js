@@ -96,7 +96,7 @@ router.post("/", (req, res) => {
 })
 
 router.post("/:id/reviews", async (req, res) => {
-    const newReview = { ...req.body, projectId: req.params.id }
+    const newReview = { ...req.body, projectId: req.params.id, date: new Date() }
     const reviews = getReviews()
 
     reviews.push(newReview)

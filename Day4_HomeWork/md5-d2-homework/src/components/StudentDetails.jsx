@@ -31,6 +31,12 @@ class StudentDetails extends Component {
             repoUrl: '',
             liveUrl: '',
             studentId: this.props.match.params.id
+        },
+        addReview: false,
+        projectId: "",
+        newReview: {
+            name: "",
+            text: "",
         }
     }
 
@@ -50,7 +56,6 @@ class StudentDetails extends Component {
         });
     }
 
-
     getProjectPhoto = async (id) => {
         const resp = await fetch("http://127.0.0.1:3003/projects/" + id + "/getPhoto")
         if (resp.ok) {
@@ -60,7 +65,6 @@ class StudentDetails extends Component {
             });
         }
     }
-
 
     fetchData = async () => {
         let resp = await fetch("http://127.0.0.1:3003/students/" + this.props.match.params.id + "/projects")
@@ -97,7 +101,6 @@ class StudentDetails extends Component {
             });
         }
     }
-
 
     componentDidMount = () => {
         this.fetchData()
@@ -213,6 +216,44 @@ class StudentDetails extends Component {
         }
     }
 
+    getProjectId = (id) => {
+        this.setState({
+            projectId: id,
+            addReview: true
+        });
+    }
+
+    handleReview = (e) => {
+        const newReview = this.state.newReview
+        newReview[e.currentTarget.id] = e.currentTarget.value
+        this.setState({
+            newReview
+        });
+    }
+
+    addNewReview = async (e) => {
+        e.preventDefault()
+        const resp = await fetch("http://127.0.0.1:3003/projects/" + this.state.projectId + "/reviews", {
+            method: "POST",
+            body: JSON.stringify(this.state.newReview),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        if (resp.ok) {
+            this.fetchReviews(this.props.match.params.id)
+            this.setState({
+                addReview: false,
+                projectId: "",
+                newReview: {
+                    name: "",
+                    text: "",
+                }
+            });
+        }
+    }
+
     render() {
         return (
             <Container className="d-flex justify-content-center flex-column mt-5">
@@ -249,6 +290,7 @@ class StudentDetails extends Component {
                                         <TableForProjects
                                             projects={this.state.projects}
                                             reviews={this.state.reviews}
+                                            getProjectId={this.getProjectId}
                                             fetchReviews={this.fetchReviews}
                                             getProjectPhoto={this.getProjectPhoto}
                                             deleteProject={this.deleteProject}
@@ -435,6 +477,52 @@ class StudentDetails extends Component {
                         </div>
                     </Modal.Body>
                 </Modal>
+                <Modal
+                    show={this.state.addReview}
+                    onHide={() => this.setState({
+                        addReview: false,
+                        newReview: {
+                            name: "",
+                            text: ""
+                        },
+                        projectId: ""
+                    })}>
+                    <Modal.Header>
+                        <Modal.Title>Add a new review</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="text-center">
+                        <Form onSubmit={this.addNewReview}>
+                            <Row className="d-flex justify-content-center">
+                                <Col md={6}>
+                                    <Form.Group controlId="name">
+                                        <Form.Label>Name</Form.Label>
+                                        <Form.Control
+                                            value={this.state.newReview.name}
+                                            onChange={this.handleReview}
+                                            type="text"
+                                            placeholder="Please write your name.." />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row className="d-flex justify-content-center">
+                                <Col md={8}>
+                                    <Form.Group controlId="text">
+                                        <Form.Label>Comment</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={this.state.newReview.text}
+                                            onChange={this.handleReview}
+                                            placeholder="Leave your comment.." />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <div className="d-flex justify-content-center">
+                                <Button variant="primary" type="submit">Send review</Button>
+                            </div>
+                        </Form>
+                    </Modal.Body>
+                </Modal>
+
             </Container>
 
         );
