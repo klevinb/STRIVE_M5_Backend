@@ -137,6 +137,7 @@ class App extends Component {
     if (resp.ok && resp2.ok) {
       this.setState({
         addStudent: false,
+        adminMessage: false,
         editStudent: false,
         postButton: true,
         newStudent: {
@@ -178,7 +179,9 @@ class App extends Component {
     if (resp.ok) {
       this.fetchData()
     } else {
-      alert("Take it easy user, you cannot delete admin! ;)")
+      this.setState({
+        adminMessage: true
+      });
     }
   }
 
@@ -419,6 +422,14 @@ class App extends Component {
                 :
                 null
               }
+            </Modal.Body>
+          </Modal>
+          <Modal show={this.state.adminMessage} onHide={() => this.setState({ adminMessage: false })}>
+            <Modal.Body>
+              <Image
+                src="https://lh3.googleusercontent.com/proxy/WYXMxbth2pjeU1wqWHQle4s8mDe0Bu3Qe4naB9UEqQnGVpacPW1rObhbqo1zHtZnHJfYYccWQKqTIt3fDVIHFe67_QahV1tMjvqD8D7iGhYPg4uJxbzO3BqEEaTdnCJMItSMeRmy9hTYfUZebsm0w81VlISzR5B0LT8"
+                fluid
+                width="100%" />
             </Modal.Body>
           </Modal>
         </Container>
