@@ -10,6 +10,7 @@ import {
   Card
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+const apiKey = process.env.REACT_APP_API_URL
 
 class App extends Component {
 
@@ -18,7 +19,7 @@ class App extends Component {
   }
 
   fetchProducts = async () => {
-    const resp = await fetch("http://127.0.0.1:3001/products/")
+    const resp = await fetch(apiKey + "/products/")
 
     if (resp.ok) {
       const products = await resp.json()
@@ -32,7 +33,7 @@ class App extends Component {
     this.setState({
       products: []
     });
-    const resp = await fetch("http://127.0.0.1:3001/products?category=" + category)
+    const resp = await fetch(apiKey + "/products?category=" + category)
 
     if (resp.ok) {
       const products = await resp.json()
@@ -41,7 +42,6 @@ class App extends Component {
       });
     }
   }
-
 
   componentDidMount() {
     this.fetchProducts()
@@ -54,7 +54,7 @@ class App extends Component {
     return (
       <div className="App">
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="#home">Oiii SHOP</Navbar.Brand>
+          <Navbar.Brand onClick={() => this.props.history.push("/")}>Oiii SHOP</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
@@ -65,6 +65,9 @@ class App extends Component {
                 <NavDropdown.Item onClick={() => this.fetchCategory("bikes")}>Bikes</NavDropdown.Item>
               </NavDropdown>
               <Link className="nav-link" to={"/backoffice"}>BackOffice</Link>
+              <NavDropdown title="Options" id="basic-nav-dropdown">
+                <NavDropdown.Item href={apiKey + "/products/convert/exportToCSV"}>Products(CSV)</NavDropdown.Item>
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

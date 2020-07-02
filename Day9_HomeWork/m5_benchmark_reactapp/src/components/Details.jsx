@@ -15,6 +15,8 @@ import {
 } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
+const apiKey = process.env.REACT_APP_API_URL
+
 class Details extends Component {
 
     state = {
@@ -64,7 +66,7 @@ class Details extends Component {
     }
 
     fetchReviews = async () => {
-        const resp = await fetch("http://127.0.0.1:3001/products/" + this.props.match.params.id + "/reviews")
+        const resp = await fetch(apiKey + "/products/" + this.props.match.params.id + "/reviews")
         if (resp.ok) {
             const reviews = await resp.json()
             this.setState({
@@ -75,7 +77,7 @@ class Details extends Component {
 
     addReview = async (e) => {
         e.preventDefault()
-        const resp = await fetch("http://127.0.0.1:3001/reviews", {
+        const resp = await fetch(apiKey + "/reviews", {
             method: "POST",
             body: JSON.stringify(this.state.newReview),
             headers: {
@@ -96,7 +98,7 @@ class Details extends Component {
     }
 
     fetchProduct = async () => {
-        const resp = await fetch("http://127.0.0.1:3001/products/" + this.props.match.params.id)
+        const resp = await fetch(apiKey + "/products/" + this.props.match.params.id)
 
         if (resp.ok) {
             const product = await resp.json()
@@ -107,7 +109,7 @@ class Details extends Component {
     }
 
     editProduct = async () => {
-        const resp = await fetch("http://127.0.0.1:3001/products/" + this.props.match.params.id)
+        const resp = await fetch(apiKey + "/products/" + this.props.match.params.id)
 
         if (resp.ok) {
             const product = await resp.json()
@@ -126,7 +128,7 @@ class Details extends Component {
     }
 
     deleteProduct = async () => {
-        const resp = await fetch("http://127.0.0.1:3001/products/" + this.props.match.params.id, {
+        const resp = await fetch(apiKey + "/products/" + this.props.match.params.id, {
             method: "DELETE"
         })
         if (resp.ok) {
@@ -146,11 +148,12 @@ class Details extends Component {
     }
 
     deleteReview = async (id) => {
-        const resp = await fetch("http://127.0.0.1:3001/reviews/" + id, {
+        const resp = await fetch(apiKey + "/reviews/" + id, {
             method: "DELETE"
         })
-
-        this.fetchProduct()
+        setTimeout(() => {
+            this.fetchProduct()
+        }, 200)
 
     }
 
@@ -159,7 +162,7 @@ class Details extends Component {
         const data = new FormData()
         data.append("product", this.state.photo)
 
-        const resp = await fetch("http://127.0.0.1:3002/products/" + this.props.match.params.id, {
+        const resp = await fetch(apiKey + "/products/" + this.props.match.params.id, {
             method: "PUT",
             body: JSON.stringify(this.state.editProductInfo),
             headers: {
@@ -167,7 +170,7 @@ class Details extends Component {
             }
         })
 
-        let addPhoto = await fetch("http://127.0.0.1:3002/products/" + this.props.match.params.id + "/upload", {
+        let addPhoto = await fetch(apiKey + "/products/" + this.props.match.params.id + "/upload", {
             method: "POST",
             body: data
         })
@@ -187,7 +190,7 @@ class Details extends Component {
         return (
             <div>
                 <Navbar bg="light" expand="lg">
-                    <Navbar.Brand href="#home">Oiii SHOP</Navbar.Brand>
+                    <Navbar.Brand onClick={() => this.props.history.push("/")}>Oiii SHOP</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
@@ -224,8 +227,18 @@ class Details extends Component {
                                         >Delete</Button>
                                         <Button
                                             variant="warning"
+                                            className="mr-3"
                                             onClick={() => this.editProduct()}
                                         >Edit</Button>
+                                        <Button
+                                            variant="info"
+                                        >
+                                            <a
+                                                style={{ color: "white" }}
+                                                href={apiKey + "/products/" + this.props.match.params.id + "/exportToPDF"}
+                                            >PDF(details)
+                                            </a>
+                                        </Button>
                                     </div>
                                     <div className="d-flex justify-content-center mt-4">
                                         {this.state.reviews.length > 0 ?

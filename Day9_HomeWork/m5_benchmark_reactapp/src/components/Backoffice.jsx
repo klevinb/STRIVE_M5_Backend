@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
+const apiKey = process.env.REACT_APP_API_URL
 
 class Backoffice extends React.Component {
     state = {
@@ -37,7 +38,7 @@ class Backoffice extends React.Component {
         const data = new FormData()
         data.append("product", this.state.photo)
 
-        let response = await fetch("http://127.0.0.1:3001/products", {
+        let response = await fetch(apiKey + "/products", {
             method: "POST",
             body: JSON.stringify(this.state.product),
             headers: {
@@ -46,7 +47,7 @@ class Backoffice extends React.Component {
         })
         let productId = await response.json()
 
-        let addPhoto = await fetch("http://127.0.0.1:3001/products/" + productId[productId.length - 1].id + "/upload", {
+        let addPhoto = await fetch(apiKey + "/products" + productId[productId.length - 1].id + "/upload", {
             method: "POST",
             body: data
         })

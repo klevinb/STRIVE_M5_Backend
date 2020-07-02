@@ -13,7 +13,7 @@ const publicFolderPath = join(__dirname, "./public")
 server.use(cors())
 server.use(express.json())
 server.use(express.static(publicFolderPath))
-const port = process.env.PORT || 3003
+const port = process.env.PORT || 3005
 
 // Routes
 server.use("/products", productsRoutes)

@@ -13,7 +13,7 @@ const checkReviewError = (err, req, res, next) => {
 
 const generalError = (err, req, res, next) => {
     if (!res.headersSent) {
-        res.status(err.httpStatusCode || 500).send("Some problems in the server!")
+        res.status(err.httpStatusCode || 500).send(err.message)
     }
 }
 

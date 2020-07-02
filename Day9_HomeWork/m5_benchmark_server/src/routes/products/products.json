@@ -1,1 +1,57 @@
-[{"id":"au6a158kbw1zkg9","name":"app test 1","description":"somthing longer","brand":"nokia","imageUrl":"http://127.0.0.1:3001/img/products/au6a158kbw1zkg9.png","price":100,"category":"smartphones","createdAt":"2020-06-26T10:09:04.328Z","updatedAt":"2020-06-26T10:09:04.328Z"},{"id":"au6a64skbwc25fs","name":"Iphone 11","brand":"iPhone","description":"good phone","price":"920","imageUrl":"http://127.0.0.1:3001/img/products/au6a64skbwc25fs.png","category":"smarphones","createdAt":"2020-06-26T14:51:00.999Z","updatedAt":"2020-06-26T14:51:00.999Z"},{"id":"au6aaa4kbwc3ud8","name":"Bike1","brand":"bike","description":"bike","price":"300","imageUrl":"http://127.0.0.1:3001/img/products/au6aaa4kbwc3ud8.png","category":"bikes","createdAt":"2020-06-26T14:52:19.963Z","updatedAt":"2020-06-26T14:52:19.963Z"},{"id":"au6a9w8kbwc5gj6","name":"watch name","brand":"watch brand","description":"watch desc","price":"234","imageUrl":"http://127.0.0.1:3001/img/products/au6a9w8kbwc5gj6.png","category":"watches","createdAt":"2020-06-26T14:53:35.345Z","updatedAt":"2020-06-26T14:53:35.345Z"},{"id":"au6aay8kbwc7v6n","name":"bike 2 name","brand":"bike","description":"dike 2 desc","price":"245","imageUrl":"http://127.0.0.1:3001/img/products/au6aay8kbwc7v6n.png","category":"bikes","createdAt":"2020-06-26T14:55:27.646Z","updatedAt":"2020-06-26T14:55:27.646Z"},{"id":"au6a9igkbwde7uq","name":"watch","brand":"watch","description":"desc","price":"250","imageUrl":"http://127.0.0.1:3001/img/products/au6a9igkbwde7uq.png","category":"watches","createdAt":"2020-06-26T15:28:23.617Z","updatedAt":"2020-06-26T15:28:23.617Z"}]
+[
+    {
+        "id": "au6a64skbwc25fs",
+        "name": "Iphone 11",
+        "brand": "iPhone",
+        "description": "good phone",
+        "price": "920",
+        "imageUrl": "http://127.0.0.1:3005/img/products/au6a64skbwc25fs.png",
+        "category": "smartphones",
+        "createdAt": "2020-06-26T14:51:00.999Z",
+        "updatedAt": "2020-06-26T14:51:00.999Z"
+    },
+    {
+        "id": "au6aaa4kbwc3ud8",
+        "name": "Bike1",
+        "brand": "bike",
+        "description": "bike",
+        "price": "300",
+        "imageUrl": "http://127.0.0.1:3005/img/products/au6aaa4kbwc3ud8.png",
+        "category": "bikes",
+        "createdAt": "2020-06-26T14:52:19.963Z",
+        "updatedAt": "2020-06-26T14:52:19.963Z"
+    },
+    {
+        "id": "au6a9w8kbwc5gj6",
+        "name": "watch name",
+        "brand": "watch brand",
+        "description": "watch desc",
+        "price": "234",
+        "imageUrl": "http://127.0.0.1:3005/img/products/au6a9w8kbwc5gj6.png",
+        "category": "watches",
+        "createdAt": "2020-06-26T14:53:35.345Z",
+        "updatedAt": "2020-06-26T14:53:35.345Z"
+    },
+    {
+        "id": "au6aay8kbwc7v6n",
+        "name": "bike 2 name",
+        "brand": "bike",
+        "description": "dike 2 desc",
+        "price": "245",
+        "imageUrl": "http://127.0.0.1:3005/img/products/au6aay8kbwc7v6n.png",
+        "category": "bikes",
+        "createdAt": "2020-06-26T14:55:27.646Z",
+        "updatedAt": "2020-06-26T14:55:27.646Z"
+    },
+    {
+        "id": "au6a9igkbwde7uq",
+        "name": "watch",
+        "brand": "watch",
+        "description": "desc",
+        "price": "250",
+        "imageUrl": "http://127.0.0.1:3005/img/products/au6a9igkbwde7uq.png",
+        "category": "watches",
+        "createdAt": "2020-06-26T15:28:23.617Z",
+        "updatedAt": "2020-06-26T15:28:23.617Z"
+    }
+]
