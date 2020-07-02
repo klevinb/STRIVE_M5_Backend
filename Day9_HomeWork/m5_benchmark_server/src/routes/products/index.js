@@ -281,11 +281,12 @@ router.get("/:id/exportToPDF", async (req, res, next) => {
             }
 
             var pdfDoc = printer.createPdfKitDocument(docDefinition);
-            pdfDoc.pipe(fs.createWriteStream(path.join(pdfSaverPath, `${findProduct.id}.pdf`)))
-            pdfDoc.end();
-
             res.setHeader("Content-Disposition", `attachment; filename=${findProduct.id}.pdf`)
-            fs.createReadStream(path.join(pdfSaverPath, `${findProduct.id}.pdf`)).pipe(res)
+            //saves file to the disk
+            // pdfDoc.pipe(fs.createWriteStream(path.join(pdfSaverPath, `${findProduct.id}.pdf`)))
+            //sends file to user
+            pdfDoc.pipe(res)
+            pdfDoc.end()
 
         } else {
             const err = new Error()
