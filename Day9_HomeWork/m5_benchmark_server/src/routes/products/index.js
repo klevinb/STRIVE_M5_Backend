@@ -38,6 +38,20 @@ const getReviews = async () => {
         console.log(error)
     }
 }
+const getProductPrice = async (id) => {
+    const products = await getProducts()
+    const findProduct = products.find(product => product.id === id)
+    if (findProduct) {
+        return {
+            price: parseInt(findProduct.price),
+            name: findProduct.name
+        }
+    } else {
+        const err = new Error()
+        err.message = "No product with that ID"
+        console.log(err)
+    }
+}
 router.get("/", async (req, res, next) => {
     const products = await getProducts()
     if (products.length > 0) {
@@ -207,10 +221,9 @@ router.delete("/:id", async (req, res, next) => {
 
 })
 router.get("/calculate/sumTwoPrices", async (req, res, next) => {
-    if (req.query && req.query.p1price && req.query.p2price) {
-        const product1 = parseInt(req.query.p1price)
-        const product2 = parseInt(req.query.p1price)
-        console.log(product1, product2)
+    if (req.query && req.query.fpid && req.query.spid) {
+        const product1 = await getProductPrice(req.query.fpid)
+        const product2 = await getProductPrice(req.query.spid)
         try {
             const xml = begin({
                 version: "1.0",
@@ -225,10 +238,10 @@ router.get("/calculate/sumTwoPrices", async (req, res, next) => {
                 .ele("soap:Body")
                 .ele("Add", { "xmlns": "http://tempuri.org/" })
                 .ele("intA")
-                .text(product1)
+                .text(product1.price)
                 .up()
                 .ele("intB")
-                .text(product2)
+                .text(product2.price)
                 .end()
 
             const response = await axios({
@@ -239,9 +252,15 @@ router.get("/calculate/sumTwoPrices", async (req, res, next) => {
             })
 
             const xmlRespons = await response.data
+            console.log(response)
             const result = xml2js(xmlRespons, { compact: true })
-
-            res.status(200).send(result)
+            const total = result["soap:Envelope"]["soap:Body"].AddResponse.AddResult._text
+            res.status(200).send(`You selected two products 
+            
+                ${product1.name} => ${product1.price} $
+                ${product2.name} => ${product2.price} $
+            
+            with a total cost: ${total} $`)
 
         } catch (error) {
             next(error)
