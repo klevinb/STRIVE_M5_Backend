@@ -21,7 +21,7 @@
   "homepage": "https://github.com/nclBaz/strive-b3-m5-d3-middlewares-#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "express-list-endpoints": "^4.0.1",
     "express-validator": "^6.6.0",
     "uniqid": "^5.2.0"
